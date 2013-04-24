@@ -1,5 +1,5 @@
 Restful TV Schedule API
---------
+=======================
 
 ##Build and deploy
 Execute the following command from the project directory:
@@ -11,7 +11,7 @@ Copy the generated war file from the `target` directory of the project to the `w
 ##Calling the API
 ###Get all programmes
 
-It's possible to retrieve the whole schedule with the following HTTP GET request:
+It's possible to retrieve the whole schedule with the following HTTP `GET` request:
 
     curl localhost:8080/metabroadcast-test02/programmes/ -v -X GET
 
@@ -55,13 +55,30 @@ Response example (with a 200 HTTP Status):
         </programme>
     </schedule>
 
+###Retrieve a single programme
+It's possible to retrieve data related to a single programme (providing its `id`), with the following HTTP `GET` request:
+
+    curl localhost:8080/metabroadcast-test02/programmes/4 -v -X GET
+
+Where in this case 4 is the id of the programme to retrieve data for.
+Response example:
+
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <programme>
+        <id>4</id>
+        <name>How I Met Your Mother</name>
+        <description>Ted searches for the woman of his dreams in New York City with the help of his four best friends</description>
+        <channel>bbc two</channel>
+        <startTime>2013-04-15 21:30:00</startTime>
+    </programme>
+
 ###Insert a new programme
 
-It's possible to insert a new programme with the following HTTP POST request:
+It's possible to insert a new programme with the following HTTP `POST` request:
 
     curl localhost:8080/metabroadcast-test02/programmes/ -v -X POST -HContent-type:application/xml -d "<programme><name>The Walking Dead</name><description>The Walking Dead description</description><channel>bbc two</channel><startTime>2013-04-26 22:30:00</startTime></programme>"
 
-The system create a new id automatically and answer with the new programme data.
+The system create a new `id` automatically and answer with the new programme data.
 Response example (with a 201 HTTP Status):
 
     <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -75,7 +92,7 @@ Response example (with a 201 HTTP Status):
 
 ###Update a programme
 
-It's possible to update an existing programme with the following HTTP PUT request:
+It's possible to update an existing programme with the following HTTP `PUT` request:
 
     curl localhost:8080/metabroadcast-test02/programmes/5 -v -X PUT -HContent-type:application/xml -d "<programme><name>The Walking Dead Reloaded</name><description>The Walking Dead updated description</description><channel>bbc two</channel><startTime>2013-04-26 22:30:00</startTime></programme>"
 
@@ -83,7 +100,7 @@ No response is provided in this case (Just a 200 HTTP Status)
 
 ###Delete a programme
 
-It's possible to delete an existing programme with the following HTTP DELETE request:
+It's possible to delete an existing programme with the following HTTP `DELETE` request:
 
     curl localhost:8080/metabroadcast-test02/programmes/5 -v -X DELETE
 
@@ -120,7 +137,7 @@ Response example (with a 200 HTTP Status)
 
 The following HTTP Status are returned in case of exceptions:
 
-*404* (Not found) for GET, POST or DELETE requests related to an id not existing in the data store.
+*404 (Not found)* for `GET`, `POST` or `DELETE` requests related to an `id` not existing in the data store.
 An error message is also provided, example:
 
     <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -128,7 +145,7 @@ An error message is also provided, example:
         <error>The required resource is not present</error>
     </errors>
 
-*400* (Bad request) for all kind of requests for which a wrong data is sent as input data. For example if a string id is used instead of a number one.
+*400 (Bad request)* for all kind of requests for which a wrong data is sent as input data. For example if a string id is used instead of a number one.
 An error message is also provided, example:
 
     <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -138,13 +155,13 @@ An error message is also provided, example:
 
 ##Input data validation
 
-For POST and PUT requests programme data is validated before creating or updated the datastore. The following fields are required:
+For `POST` and `PUT` requests programme data is validated before creating or updated the datastore. The following fields are required:
 
 * name
 * channel
 * startTime
 
-If one of these properties is missing in the body a *400* HTTP Status is returned with an error message explaining the problem, for example:
+If one of these properties is missing in the body a 400 HTTP Status is returned with an error message explaining the problem, for example:
 
     <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     <errors>

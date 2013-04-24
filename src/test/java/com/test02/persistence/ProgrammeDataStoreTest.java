@@ -1,3 +1,5 @@
+package com.test02.persistence;
+
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.test02.persistence.datafilter.PredicateRepository;

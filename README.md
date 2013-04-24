@@ -93,11 +93,11 @@ No response is provided in this case (Just a 200 HTTP Status)
 
 It's possible to filter data providing a query URL with the following (optional) parameters:
 
-*channel (the name of the channel of interest)
-*dateFrom (the startTime of the programm must be greater than or equals the provided date)
-*dateTo (the startTime of the programm must be lesser than or equals the provided date)
+* channel (the name of the channel of interest)
+* dateFrom (the startTime of the programm must be greater than or equals the provided date)
+* dateTo (the startTime of the programm must be lesser than or equals the provided date)
 
-The accepted format of the date is "yyyy-MM-dd HH:mm:ss" example "2013-04-26 12:30:00"
+The accepted format of the date is `"yyyy-MM-dd HH:mm:ss"` example `"2013-04-26 12:30:00"`
 
 Query example:
 
@@ -140,9 +140,9 @@ An error message is also provided, example:
 
 For POST and PUT requests programme data is validated before creating or updated the datastore. The following fields are required:
 
-*name
-*channel
-*startTime
+* name
+* channel
+* startTime
 
 If one of these properties is missing in the body a *400* HTTP Status is returned with an error message explaining the problem, for example:
 

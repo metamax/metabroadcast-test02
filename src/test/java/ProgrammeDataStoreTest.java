@@ -1,11 +1,12 @@
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.test02.persistence.datafilter.Predicates;
+import com.test02.persistence.datafilter.PredicateRepository;
 import com.test02.exception.ResourceNotFoundException;
 import com.test02.model.Programme;
 import com.test02.persistence.DataLoader;
 import com.test02.persistence.DataStore;
 import com.test02.persistence.ProgrammeDataStore;
+import com.test02.persistence.datafilter.Query;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -137,9 +138,10 @@ public class ProgrammeDataStoreTest {
 
     @Test
     public void testGetAllWithPredicateShouldFilterData() {
-        Predicate<Programme> filterByChannel = Predicates.filteredByChannel(BBC_ONE);
+		Query<Programme> query = new Query<Programme>();
+		query.addPredicate(PredicateRepository.withChannel(BBC_ONE));
 
-        assertThat(dataStore.getAll(filterByChannel).size()).isEqualTo(1);
+        assertThat(dataStore.getFiltered(query).size()).isEqualTo(1);
     }
 
     @Test

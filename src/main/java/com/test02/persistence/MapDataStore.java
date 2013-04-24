@@ -2,10 +2,12 @@ package com.test02.persistence;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.test02.exception.ResourceNotFoundException;
 import com.test02.model.Identifiable;
+import com.test02.persistence.datafilter.Query;
 
 import java.io.Serializable;
 import java.util.List;
@@ -53,11 +55,11 @@ public abstract class MapDataStore<T extends Identifiable> implements DataStore<
         return Lists.newArrayList(elements.values());
     }
 
-    @Override
-    public List<T> getAll(Predicate predicate) {
-        Iterable<T> filtered = Iterables.filter(elements.values(), predicate);
-        return Lists.newArrayList(filtered);
-    }
+	@Override
+	public List<T> getFiltered(Query<T> query) {
+		Iterable<T> filtered = Iterables.filter(elements.values(), Predicates.and(query.getPredicates()));
+		return Lists.newArrayList(filtered);
+	}
 
     private void checkResourceExistent(Serializable id) {
         if (!elements.containsKey(id))

@@ -5,7 +5,8 @@ import com.test02.exception.ResourceNotFoundException;
 import com.test02.model.Programme;
 import com.test02.model.Schedule;
 import com.test02.persistence.DataStore;
-import com.test02.persistence.datafilter.Predicates;
+import com.test02.persistence.datafilter.PredicateRepository;
+import com.test02.persistence.datafilter.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -14,12 +15,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
 @Controller
 @RequestMapping("/programmes")
-public class ProgrammeController {
+public class ProgrammeController extends BaseController {
 
     @Autowired
     @Qualifier("programmeDataStore")
@@ -62,8 +65,18 @@ public class ProgrammeController {
 
     @RequestMapping(value = "/query.xml*", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<Schedule> query(@RequestParam(required = false) String channel) {
-        List<Programme> filteredProgrammes = dataStore.getAll(Predicates.filteredByChannel(channel));
+    public ResponseEntity<Schedule> query(
+			@RequestParam(required = false) String channel,
+			@RequestParam(required = false) Date dateFrom,
+			@RequestParam(required = false) Date dateTo) {
+
+		Query<Programme> query = new Query<Programme>();
+		query.addPredicateIfParameterPresent(Optional.fromNullable(channel), PredicateRepository.withChannel(channel));
+		query.addPredicateIfParameterPresent(Optional.fromNullable(dateFrom), PredicateRepository.startDateFrom(dateFrom));
+		query.addPredicateIfParameterPresent(Optional.fromNullable(dateTo), PredicateRepository.startDateTo(dateTo));
+		
+		List<Programme> filteredProgrammes = dataStore.getFiltered(query);
+		
         return new ResponseEntity<Schedule>(new Schedule(filteredProgrammes), HttpStatus.OK);
     }
 

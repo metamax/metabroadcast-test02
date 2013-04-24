@@ -19,8 +19,9 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     }
 
     @ExceptionHandler
-    protected ResponseEntity handleException(ResourceNotFoundException ex) {
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    protected ResponseEntity<ErrorMessage> handleException(ResourceNotFoundException ex) {
+		ErrorMessage errorMessage = new ErrorMessage("The required resource is not present");
+        return new ResponseEntity(errorMessage, HttpStatus.NOT_FOUND);
     }
 
 }

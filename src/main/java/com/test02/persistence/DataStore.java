@@ -3,6 +3,7 @@ package com.test02.persistence;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.test02.model.Identifiable;
+import com.test02.persistence.datafilter.Query;
 
 import java.io.Serializable;
 import java.util.List;
@@ -56,10 +57,10 @@ public interface DataStore<T extends Identifiable> {
      */
     public List<T> getAll();
 
-    /**
-     * Return all the element in the data store that satisfy a predicate
-     * @param predicate the predicate used for filtering
-     * @return the list of the element that satisfy the predicate
-     */
-    public List<T> getAll(Predicate predicate);
+	/**
+	 * 
+	 * @param query the query to apply for filtering
+	 * @return the list of elements that satisfy the query
+	 */
+	public List<T> getFiltered(Query<T> query);
 }

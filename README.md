@@ -155,7 +155,7 @@ An error message is also provided, example:
 
 ##Input data validation
 
-For `POST` and `PUT` requests programme data is validated before creating or updated the datastore. The following fields are required:
+For `POST` and `PUT` requests programme data is validated before creating or updated the programme. The following fields are required:
 
 * name
 * channel

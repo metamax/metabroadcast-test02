@@ -30,14 +30,12 @@ public class ProgrammeController extends BaseController {
     ProgrammeValidator validator;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    @ResponseBody
     public ResponseEntity<Schedule> programmes() {
         return new ResponseEntity<Schedule>(new Schedule(dataStore.getAll()), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<Programme> programmes(@PathVariable String id) throws ResourceNotFoundException {
+    public ResponseEntity<Programme> getProgramme(@PathVariable String id) throws ResourceNotFoundException {
         Optional<Programme> foundProgramme = dataStore.findById(checkAndParseId(id));
         if (!foundProgramme.isPresent()) {
             throw new ResourceNotFoundException();
@@ -71,8 +69,7 @@ public class ProgrammeController extends BaseController {
     }
 
     @RequestMapping(value = "/query.xml*", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<Schedule> query(
+    public ResponseEntity<Schedule> getFilteredProgrammes(
 			@RequestParam(required = false) String channel,
 			@RequestParam(required = false) Date dateFrom,
 			@RequestParam(required = false) Date dateTo) {

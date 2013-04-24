@@ -1,7 +1,6 @@
 package com.test02.persistence;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -28,18 +27,21 @@ public abstract class MapDataStore<T extends Identifiable> implements DataStore<
     @Override
     public T insert(T element) {
         checkNotNull(element);
+
         Serializable id = generateId();
         element.setId(id);
         elements.put(id, element);
+
         return element;
     }
 
     @Override
-    public synchronized void update(T element) {
+    public synchronized T update(T element) {
         checkNotNull(element);
         checkResourceExistent(element.getId());
 
         elements.put(element.getId(), element);
+        return element;
     }
 
     @Override

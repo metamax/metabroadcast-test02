@@ -35,6 +35,8 @@ public class ProgrammeDataStoreTest {
     private Programme programme2;
     private final Integer NOT_EXISTENT_ID = 999;
     private final String BBC_ONE = "bbc one";
+    private final String BBC_TWO = "bbc two";
+
 
     @Before
     public void setUp() {
@@ -137,9 +139,20 @@ public class ProgrammeDataStoreTest {
     }
 
     @Test
-    public void testGetAllWithPredicateShouldFilterData() {
+    public void testGetFilteredWithOnePredicate() {
 		Query<Programme> query = new Query<Programme>();
 		query.addPredicate(PredicateRepository.withChannel(BBC_ONE));
+
+        assertThat(dataStore.getFiltered(query).size()).isEqualTo(1);
+    }
+
+    @Test
+    public void testGetFilteredWithComplexQuery() {
+        Query<Programme> query = new Query<Programme>();
+        query.addPredicate(PredicateRepository.withChannel(BBC_TWO));
+
+        DateTime dateFrom = new DateTime(2013, 05, 03, 00, 00, 00);
+        query.addPredicate(PredicateRepository.startDateFrom(dateFrom.toDate()));
 
         assertThat(dataStore.getFiltered(query).size()).isEqualTo(1);
     }

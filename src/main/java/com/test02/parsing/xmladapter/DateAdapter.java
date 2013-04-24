@@ -1,4 +1,4 @@
-package com.test02.xmladapter;
+package com.test02.parsing.xmladapter;
 
 import com.test02.constants.ApplicationConstants;
 

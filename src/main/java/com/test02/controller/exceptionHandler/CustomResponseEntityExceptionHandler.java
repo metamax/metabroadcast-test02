@@ -1,8 +1,8 @@
 package com.test02.controller.exceptionHandler;
 
+import com.test02.exception.NotValidDataException;
 import com.test02.exception.ResourceNotFoundException;
 import com.test02.model.ErrorMessage;
-import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,8 +20,14 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 
     @ExceptionHandler
     protected ResponseEntity<ErrorMessage> handleException(ResourceNotFoundException ex) {
-		ErrorMessage errorMessage = new ErrorMessage("The required resource is not present");
+		ErrorMessage errorMessage = new ErrorMessage(ex.getMessage());
         return new ResponseEntity(errorMessage, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    protected ResponseEntity<ErrorMessage> handleException(NotValidDataException ex) {
+        ErrorMessage errorMessage = new ErrorMessage(ex.getValidationResult().getErrorMessages());
+        return new ResponseEntity(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
 }

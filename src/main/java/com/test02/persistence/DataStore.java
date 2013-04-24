@@ -1,7 +1,7 @@
 package com.test02.persistence;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
+import com.test02.exception.ResourceNotFoundException;
 import com.test02.model.Identifiable;
 import com.test02.persistence.datafilter.Query;
 
@@ -29,19 +29,22 @@ public interface DataStore<T extends Identifiable> {
     /**
      * Insert an element in the data store
      * @param element
-     * @return the inserted element
+     * @return the created element
      */
     public T insert(T element);
 
     /**
      * Update an element if exists in the data store
      * @param element the element to update
+     * @return the updated element
+     * @throws ResourceNotFoundException if the resource to update is not present
      */
-    public void update(T element);
+    public T update(T element);
 
     /**
      * Delete and element from the data store
      * @param id the identifier of the element to delete
+     * @throws ResourceNotFoundException if the resource to delete is not present
      */
     public void delete(Serializable id);
 

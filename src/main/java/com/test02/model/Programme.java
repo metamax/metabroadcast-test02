@@ -1,6 +1,6 @@
 package com.test02.model;
 
-import com.test02.xmladapter.DateAdapter;
+import com.test02.parsing.xmladapter.DateAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

@@ -91,7 +91,8 @@ public class ProgrammeDataStoreTest {
         assertThat(dataStore.findById(programme.getId()).isPresent()).isTrue();
     }
 
-    @Test public void testUpdate() {
+    @Test
+    public void testUpdate() {
         Programme programme2Updated = new Programme();
         programme2Updated.setId(programme2.getId());
         programme2Updated.setName("The Office new Serie");

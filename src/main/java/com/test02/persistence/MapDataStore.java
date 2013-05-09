@@ -2,6 +2,7 @@ package com.test02.persistence;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.test02.exception.ResourceNotFoundException;
@@ -36,25 +37,26 @@ public abstract class MapDataStore<T extends Identifiable> implements DataStore<
     }
 
     @Override
-    public synchronized T update(T element) {
+    public T update(T element) {
         checkNotNull(element);
-        checkResourceExistent(element.getId());
 
-        elements.put(element.getId(), element);
+        T replaced = elements.replace(element.getId(), element);
+        checkResourceExistent(replaced);
+
         return element;
     }
 
     @Override
-    public synchronized void delete(Serializable id) {
+    public void delete(Serializable id) {
         checkNotNull(id);
-        checkResourceExistent(id);
 
-        elements.remove(id);
+        T removed = elements.remove(id);
+        checkResourceExistent(removed);
     }
 
     @Override
     public List<T> getAll() {
-        return Lists.newArrayList(elements.values());
+        return ImmutableList.copyOf(elements.values());
     }
 
 	@Override
@@ -63,8 +65,8 @@ public abstract class MapDataStore<T extends Identifiable> implements DataStore<
 		return Lists.newArrayList(filtered);
 	}
 
-    private void checkResourceExistent(Serializable id) {
-        if (!elements.containsKey(id))
+    private void checkResourceExistent(T resource) {
+        if (resource == null)
             throw new ResourceNotFoundException();
     }
 
